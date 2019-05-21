@@ -8,10 +8,11 @@ audio.play()
 socket.addEventListener('open', (event) => {})
 socket.addEventListener('message', (event) => {
   output.value += `-> ${event.data}\n`
+  output.scrollTop = output.scrollHeight
 })
 
 document.addEventListener('keydown', (event) => {
-  if (event.altKey && event.key == 'Enter') {
+  if ((event.metaKey || event.ctrlKey) && event.key == 'Enter') {
     socket.send(input.value)
   }
 })

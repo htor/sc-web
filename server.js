@@ -43,6 +43,18 @@ function capture (device) {
   })
 }
 
+async function evaluate (sclang, code) {
+  let result
+  try {
+    result = await sclang.interpret(code)
+    result = result.string ? result.string : String(result)
+  } catch (error) {
+    result = error.message
+  } finally {
+    return result
+  }
+}
+
 function exit (message) {
   console.log(`${message + ' -' || ''} Exiting...`)
   process.exit(message ? 1 : 0)
@@ -51,7 +63,7 @@ function exit (message) {
 async function main () {
   const devices = portaudio.getDevices()
   const jack = devices.filter((device) => device.name === 'JackRouter')[0]
-  if (!jack) exit('Error: jack is not running')
+  if (!jack) exit('Error: JACK server is not running')
   console.log('Booting SuperCollider server...');
   const sclang = await boot()
   await sleep(1000)
@@ -82,9 +94,9 @@ async function main () {
   const server = app.listen(8080)
   const wss = new WebSocket.Server({ server })
   wss.on('connection', async (socket) => {
-    socket.on('message', async (message) => {
-      const result = await sclang.interpret(message)
-      socket.send(result ? result.string : '--')
+    socket.on('message', async (code) => {
+      const result = await evaluate(sclang, code)
+      socket.send(result)
     })
   })
   console.log(`Listening on port ${server.address().port}...`);
