@@ -51,14 +51,13 @@ function exit (message) {
 async function main () {
   const devices = portaudio.getDevices()
   const jack = devices.filter((device) => device.name === 'JackRouter')[0]
-  if (!jack) exit('Jack is not running')
+  if (!jack) exit('Error: jack is not running')
   console.log('Booting SuperCollider server...');
   const sclang = await boot()
   await sleep(1000)
-  console.log('Capturing audio...');
-  const audio = capture(jack)
-  await sleep(2000)
   console.log('Routing audio...');
+  const tmp = capture(jack)
+  await sleep(2000)
   await shell('jack_lsp | grep node')
   await shell(`jack_disconnect system:capture_1 node:in1`)
   await shell(`jack_disconnect system:capture_2 node:in2`)
@@ -66,14 +65,16 @@ async function main () {
   await shell(`jack_disconnect scsynth:out2 system:playback_2`)
   await shell(`jack_connect scsynth:out1 node:in1`)
   await shell(`jack_connect scsynth:out2 node:in2`)
+  tmp.quit()
   console.log('Booting web server...');
   const app = express()
   app.use(express.static('.'))
   app.get('/audio', (request, response) => {
     console.log('Streaming audio...')
+    const audio = capture(jack)
     audio.on('error', (error) => { response.end(); exit(`Error: ${error}`) })
-    response.on('close', () => { audio.quit(); exit('Client disconnected') })
     audio.start()
+    response.on('close', () => audio.quit())
     response.writeHead(200, { 'Content-Type': 'audio/wav' })
     response.write(wavHeader({ channels: 2, bitDepth: 16, sampleRate: 44100 }))
     audio.pipe(response)
