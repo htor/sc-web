@@ -1,27 +1,19 @@
 # scweb
 
-SuperCollider in the browser
+SuperCollider in the browser.
 
-## installation
+# usage
 
-This project requires [JACK](http://jackaudio.org/) to be installed. First install that, then:
+This app requires [JACK](http://jackaudio.org/) to be installed. First install and start it and then run:
 
 ```
 npm install
-```
-
-## usage
-
-Make sure JACK is already running, then to start up the editor run:
-
-```
 npm start
 ```
 
-Now open [http://localhost:8080](http://localhost:8080) in your favourite browser.
-It needs to have permission to play audio, so give it that.
-
-Now, send code to SuperCollider with Alt + Enter and get sound back.
+Open [http://localhost:8080](http://localhost:8080) in your favourite browser.
+It needs to have permission to play audio, so [give it that](https://support.mozilla.org/en-US/kb/block-autoplay)
+and refresh the page. Now you can send code to SC with Alt + Enter and get sound back.
 
 # license
 
