@@ -26,6 +26,10 @@ and refresh the page. Now you can send code to SC with Cmd + Enter and get sound
 
 evaluate code and play back sound
 
+## cmd/ctrl+period
+
+stop audio output
+
 # license
 
 MIT

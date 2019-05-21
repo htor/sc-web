@@ -15,4 +15,7 @@ document.addEventListener('keydown', (event) => {
   if ((event.metaKey || event.ctrlKey) && event.key == 'Enter') {
     socket.send(input.value)
   }
+  if ((event.metaKey || event.ctrlKey) && event.key === '.') {
+    socket.send('CmdPeriod.run')
+  }
 })
