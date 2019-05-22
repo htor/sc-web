@@ -4,7 +4,7 @@ SuperCollider in the browser. Unstable(!) Do not use for anything serious(!)
 
 # installation
 
-This app requires [JACK](http://jackaudio.org/) to be installed on the computer running this program. Refer to the documentation on how to install it properly. Once it's installed, run:
+This app requires [JACK](http://jackaudio.org/) to be installed on your computer. Refer to the documentation on how to install it properly. Once it's installed, run:
 
 ```
 npm install
